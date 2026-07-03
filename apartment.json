@@ -1,0 +1,43 @@
+{
+  "apartment": {
+    "title": "3-Room Apartment in Prenzlauer Berg, Berlin",
+    "address": "Schönhauser Allee 45, 10435 Berlin",
+    "details": {
+      "rooms": 3,
+      "size_sqm": 85,
+      "floor": 3,
+      "total_floors": 5,
+      "available_from": "August 1st, 2026",
+      "furnished": false,
+      "balcony": true,
+      "basement_storage": true,
+      "parking": false
+    },
+    "costs": {
+      "cold_rent_eur": 1450,
+      "warm_rent_eur": 1650,
+      "deposit_eur": 4350,
+      "deposit_note": "3 months cold rent, payable in 3 installments by law"
+    },
+    "appliances": {
+      "kitchen": true,
+      "dishwasher": true,
+      "washing_machine": false,
+      "internet": false
+    },
+    "rules": {
+      "pets_allowed": true,
+      "smoking_allowed": false,
+      "min_income_requirement": "3x cold rent = €4350/month net",
+      "wbs_required": false
+    },
+    "transport": {
+      "nearest_ubahn": "Schönhauser Allee U2",
+      "walking_minutes_to_ubahn": 3
+    },
+    "contact": {
+      "viewing_available": true,
+      "contact_method": "This AI assistant will book your viewing"
+    }
+  }
+}
