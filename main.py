@@ -5,9 +5,15 @@ import requests
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 app = FastAPI()
+
+CAL_API_KEY = os.getenv("CAL_API_KEY")
+CAL_EVENT_TYPE_ID = int(os.getenv("CAL_EVENT_TYPE_ID"))
+VAPI_API_KEY = os.getenv("VAPI_API_KEY")
+VAPI_PHONE_NUMBER_ID = os.getenv("VAPI_PHONE_NUMBER_ID")
 
 qualified_leads = []
 
@@ -148,3 +154,62 @@ def book_slot(name: str, email: str, start_time: str):
         return response.json()
     except Exception as e:
         return {"error": str(e)}
+
+@app.post("/outbound-call")
+def make_outbound_call(phone_number: str, applicant_name: str):
+    try:
+        url = "https://api.vapi.ai/call"
+        headers = {
+            "Authorization": f"Bearer {VAPI_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "assistant": {
+                "model": {
+                    "provider": "openai",
+                    "model": "gpt-4.1-mini",
+                    "messages": [
+                        {
+                            "role": "system",
+                            "content": f"""You are Max, a friendly male AI rental assistant for Urban Rentals Berlin.
+You are calling {applicant_name} because they expressed interest in our apartment.
+
+APARTMENT DETAILS:
+- 3 rooms, 85 sqm, Prenzlauer Berg Berlin
+- Cold rent: €1,450/month, Warm rent: €1,650/month
+- Available August 1st 2026
+- Pets allowed, no smoking
+
+YOUR JOB:
+1. Introduce yourself and explain why you're calling
+2. Ask if this is a good time to talk
+3. Ask qualification questions ONE AT A TIME:
+   - How many people will be living in the apartment?
+   - What is your monthly net income?
+   - When would you like to move in?
+   - Do you have any pets?
+4. If they qualify (income €4350+, move-in after Aug 1), offer to book a viewing
+5. If voicemail is detected, leave a brief friendly message and hang up
+6. Keep responses short and natural — this is a phone call"""
+                        }
+                    ]
+                },
+                "voice": {
+                    "provider": "vapi",
+                    "voiceId": "Elliot"
+                },
+                "firstMessage": f"Hi {applicant_name}, this is Max calling from Urban Rentals Berlin. I saw you expressed interest in our apartment in Prenzlauer Berg. Is this a good time to chat for a few minutes?"
+            },
+            "phoneNumberId": VAPI_PHONE_NUMBER_ID,
+            "customer": {
+                "number": phone_number
+            }
+        }
+        response = requests.post(url, headers=headers, json=payload)
+        print(f"\n📞 Outbound call initiated: {response.json()}")
+        return response.json()
+    except Exception as e:
+        print(f"\n❌ Outbound call error: {str(e)}")
+        return {"error": str(e)}
+
+    
