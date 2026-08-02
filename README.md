@@ -8,7 +8,7 @@ Max answers inbound calls, qualifies tenants, and books viewings automatically. 
 
 ## Demo
 
-🎥 Demo video coming soon
+🎥 [Watch Demo Video](https://www.loom.com/share/57a099d601644634891c177eebd7dad2)
 
 📞 Live agent available — contact me for access
 
